@@ -1,0 +1,33 @@
+{
+    "name": "@jvanbrunt/profanity_filter",
+    "version": "1.0.0",
+    "description": "Finds or mask profanities found in string.",
+    "license": "MIT",
+    "main": "./dist/src/index.js",
+    "types": "./dist/src/index.d.ts",
+    "type": "commonjs",
+    "scripts": {
+        "clean": "shx rm -rf dist/*",
+        "build": "tsc -b",
+        "watch": "tsc --watch",
+        "test": "mocha --ui qunit",
+        "testall": "mocha --ui qunit dist/test",
+        "prepack": "npm run clean && npm run build"
+    },
+    "keywords": [
+        "profanity",
+        "npm",
+        "package",
+        "jvanbrunt"
+    ],
+    "devDependencies": {
+        "@types/lodash": "^4.14.167",
+        "@types/mocha": "^8.2.0",
+        "@types/node": "^14.14.20",
+        "mocha": "^8.2.1",
+        "shx": "^0.3.3"
+    },
+    "dependencies": {
+        "lodash": "^4.17.20"
+    }
+}
