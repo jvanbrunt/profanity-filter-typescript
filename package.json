@@ -1,6 +1,6 @@
 {
     "name": "@jvanbrunt/profanity_filter",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Finds or mask profanities found in string.",
     "license": "MIT",
     "main": "./dist/src/index.js",
