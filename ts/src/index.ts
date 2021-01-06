@@ -4,20 +4,20 @@ type Optional<T> = T | undefined
 
 export class ProfanityFilter {
 
-    blackList: string[];
+    private _blackList: string[];
 
-    whiteList: Optional<string[]>;
+    private _whiteList: Optional<string[]>;
 
     constructor(blackList: string[] = defaultBlackList, whiteList?: string[]) {
-        this.blackList = blackList
-        this.whiteList = whiteList
+        this._blackList = blackList
+        this._whiteList = whiteList
     }
 
     containsProfanity(str: string): ProfanityResult {
         let rgx = this.regex()
         let matches = str.match(rgx)
 
-        console.log(rgx)
+        console.log(matches)
 
         if (matches) {
             return new ProfanityResult(matches)
@@ -28,31 +28,37 @@ export class ProfanityFilter {
 
     maskProfanities(str: string): string {
         let rgx = this.regex();
-        let maskedStr = str.replace(rgx, "****");
+        let maskedStr = str.replace(rgx, (match) => {
+            return Array(match.length).fill("*").join("")
+        });
         return maskedStr
     }
 
-    regex() : RegExp {
+    private regex() : RegExp {
 
         let escapedPattern = (p: string): string => {
-            return `(${escape(p)})`;
+            return "\\b(" + this.escaped(p) + ")\\b";
         }
 
         let profanities = 
         _.map(this.profanities(), escapedPattern)
         .join("|");
 
-        return new RegExp(`[^!@#$%^&*]*${profanities}[^!@#$%^&*]*`, 'i');
+        return new RegExp(`[^!@#$%^&*]*${profanities}[^!@#$%^&*]*`, 'gi');
     }
 
-    profanities(): string[] {
-        if (this.whiteList) {
-            return _.remove(this.blackList, p => {
-                return this.whiteList!.indexOf(p) > -1
+    private escaped(str: string): string {
+        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    private profanities(): string[] {
+        if (this._whiteList) {
+            return _.remove(this._blackList, p => {
+                return this._whiteList!.indexOf(p) > -1
             })
         }
 
-        return this.blackList
+        return this._blackList
     }
 }
 
